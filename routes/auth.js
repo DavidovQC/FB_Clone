@@ -27,6 +27,12 @@ router.post("/login", async (req, res) => {
         if (!user) {
             res.status(404).send("Error 404, user not found");
         }
+
+        const validPW = await bcrpyt.compare(req.body.password, user.password);
+        if (!validPW) {
+            res.status(401).send("Wrong username or password");
+        }
+        res.status(200).send(`username: ${user.username}`);
     } catch (err) {
         console.log(err);
     }
